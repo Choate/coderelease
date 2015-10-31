@@ -80,7 +80,9 @@ class TasksService extends Object
         $model->on(Tasks::EVENT_BEFORE_UPDATE, function($event) {
             /* @var Tasks $model */
             $model = $event->sender;
-            $command = sprintf('dep --file=%s --hash=%s deploy %s', $model->website->deploy_script, $model->hash, $model->website->deploy_project);
+            $exce = $this->runCommand('whereis dep');
+            $exce = trim(substr($exce, strpos($exce, '/')));
+            $command = sprintf('php %s --file=%s --hash=%s deploy %s', $exce, $model->website->deploy_script, $model->hash, $model->website->deploy_project);
             $this->runCommand($command);
         });
         $model->on(Tasks::EVENT_AFTER_UPDATE, function($event) {
@@ -102,7 +104,7 @@ class TasksService extends Object
         $model->on(Tasks::EVENT_BEFORE_UPDATE, function($event) {
             /* @var Tasks $model */
             $model = $event->sender;
-            $command = sprintf('dep --file=%s --hash=%s rollback %s', $model->website->deploy_script, $model->hash, $model->website->deploy_project);
+            $command = sprintf('php dep --file=%s --hash=%s rollback %s', $model->website->deploy_script, $model->hash, $model->website->deploy_project);
             $this->runCommand($command);
         });
         $model->status = Tasks::STATUS_ROLLBACK;
@@ -122,6 +124,6 @@ class TasksService extends Object
         $process->setTimeout(120);
         $process->mustRun();
 
-        return true;
+        return $process->getOutput();
     }
 }
