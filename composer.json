@@ -1,0 +1,28 @@
+{
+  "name": "choate/coderelease",
+  "description": "Code Release System",
+  "type" : "yii2-extension",
+  "license": "GPL2.0",
+  "version": "1.0.0",
+  "authors": [
+    {
+      "name": "choate",
+      "email": "choate.yao@gmail.com"
+    }
+  ],
+  "repositories": [
+    {
+      "type": "vcs",
+      "url": "https://github.com/Choate/coderelease"
+    }
+  ],
+  "require": {
+    "php": ">=5.5.0",
+    "yiisoft/yii2": "^2.0",
+    "yiisoft/yii2-bootstrap": "^2.0",
+    "symfony/process": "~2.6"
+  },
+  "autoload": {
+    "psr-4": {"choate\\coderelease\\": ""}
+  }
+}

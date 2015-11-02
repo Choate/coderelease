@@ -7,12 +7,29 @@
  */
 namespace choate\coderelease;
 
+use yii\base\BootstrapInterface;
+
 /**
  * Class Module
  * @package choate\coderelease
  * @author Choate <choate.yao@gmail.com>
  */
-class Module extends \yii\base\Module
+class Module extends \yii\base\Module implements BootstrapInterface
 {
-    public $username;
+    public $layout = 'main';
+    public $defaultRoute = 'websites/index';
+
+    /**
+     * @inheritDoc
+     */
+    public function bootstrap($app) {
+        \Yii::setAlias('@choate/coderelease', __DIR__);
+        if ($app instanceof \yii\console\Application) {
+            $app->controllerMap[$this->id] = [
+                'class' => '\choate\coderelease\console\CodeReleaseController',
+            ];
+        }
+    }
+
+
 }

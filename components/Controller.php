@@ -5,23 +5,14 @@
  * 不得使用、复制、修改、合并、发布、分发和/或销售本源代码的副本。
  * @copyright Copyright (c) 2013 xsteach.com all rights reserved.
  */
-namespace choate\coderelease\models;
-
-use yii\db\ActiveRecord;
+namespace choate\coderelease\components;
 
 /**
- * Class Websites
- * @property int $id
- * @property string $name
- * @property string $website
- * @property int    $status
- * @package choate\coderelease\models
+ * Class Controller
+ * @package choate\coderelease\components
  * @author Choate <choate.yao@gmail.com>
  */
-class Websites extends ActiveRecord
+class Controller extends \yii\web\Controller
 {
-    public static function tableName() {
-        return '{{%websites}}';
-    }
 
 }

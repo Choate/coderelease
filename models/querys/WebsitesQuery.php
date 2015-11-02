@@ -5,22 +5,16 @@
  * 不得使用、复制、修改、合并、发布、分发和/或销售本源代码的副本。
  * @copyright Copyright (c) 2013 xsteach.com all rights reserved.
  */
-namespace choate\coderelease\models;
+namespace choate\coderelease\models\querys;
 
-use yii\db\ActiveRecord;
+use choate\coderelease\components\ActiveQuery;
 
 /**
- * Class WebsiteConfig
- * @property int $id
- * @property int $websites_id
- * @property string $setting
- * @package choate\coderelease\models
+ * Class WebsitesQuery
+ * @package choate\coderelease\models\querys
  * @author Choate <choate.yao@gmail.com>
  */
-class WebsiteConfig extends ActiveRecord
+class WebsitesQuery extends ActiveQuery
 {
-    public static function tableName() {
-        return '{{%website_config}}';
-    }
 
 }
