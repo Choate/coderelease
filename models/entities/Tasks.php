@@ -45,7 +45,7 @@ class Tasks extends ActiveRecord
     public function scenarios() {
         return [
             self::SCENARIO_DEFAULT => $this->attributes(),
-            self::SCENARIO_TRANS => $this->attributes()
+            self::SCENARIO_TRANSACTION => $this->attributes()
         ];
     }
 
@@ -54,7 +54,7 @@ class Tasks extends ActiveRecord
      */
     public function transactions() {
         return [
-            self::SCENARIO_TRANS => self::OP_ALL,
+            self::SCENARIO_TRANSACTION => self::OP_ALL,
         ];
     }
 

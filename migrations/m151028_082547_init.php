@@ -9,7 +9,7 @@ class m151028_082547_init extends Migration
                 'id'             => Schema::TYPE_PK,
                 'website'        => Schema::TYPE_STRING . '(200) NOT NULL',
                 'name'           => Schema::TYPE_STRING . '(45) NOT NULL',
-                'deploy_command' => Schema::TYPE_STRING . '(255) NOT NULL',
+                'deploy_script' => Schema::TYPE_STRING . '(255) NOT NULL',
                 'deploy_project' => Schema::TYPE_STRING . '(45) NOT NULL',
                 'status'         => 'TINYINT(1) NOT NULL',
             ]
