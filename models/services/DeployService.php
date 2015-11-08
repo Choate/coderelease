@@ -56,7 +56,7 @@ class DeployService extends Object
     private function execCurrentVersion($model) {
         $website = $model->website;
         $result = DepControl::run(['deployScript' => $website->deploy_script, 'deployProject' => $website->deploy_project])->current();
-        list(,$version,) = explode("\n", $result);
+        list(,,$version,) = explode(PHP_EOL, $result);
 
         return $version;
     }
