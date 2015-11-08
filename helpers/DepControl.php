@@ -53,7 +53,7 @@ class DepControl extends Object
     }
 
     public function deploy($hash, $message) {
-        return $this->runCommand(sprintf('--hash="%s" --message="%s" deploy %s', $hash, $message));
+        return $this->runCommand(sprintf('--hash="%s" --message="%s" deploy', $hash, $message));
     }
 
     public function rollback($version) {
