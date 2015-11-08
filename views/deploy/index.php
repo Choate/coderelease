@@ -9,25 +9,21 @@ use yii\grid\ActionColumn;
 use yii\grid\GridView;
 use yii\helpers\Html;
 
-echo Html::a('创建任务', ['tasks/create', 'id' => $id], ['class' => 'btn btn-primary', 'style' => 'margin-bottom:10px']);
+echo Html::a('创建部署', ['deploy', 'id' => $id], ['class' => 'btn btn-primary', 'style' => 'margin-bottom:10px']);
 echo GridView::widget([
         'dataProvider' => $dataProvider,
         'layout' => '{items}',
         'columns'      => [
             'id',
-            'title',
-            'hash',
-            'apply_time:datetime',
+            'deploy_time:datetime',
+            'deploy_version',
             'statusName',
             [
                 'class'    => ActionColumn::className(),
-                'template' => "{pass}",
+                'template' => "{rollback}",
                 'buttons'  => [
-                    'pass'     => function ($url, $model) {
-                        return $model->getIsApply() ? Html::a(Html::tag('span', '', ['class' => 'glyphicon glyphicon-check']), $url, ['title' => '审核']) : '';
-                    },
-                    'version-file' => function ($url) {
-                        return Html::a(\yii\bootstrap\Html::icon('eye-open'), $url, ['title' => '查看文件']);
+                    'rollback' => function ($url) {
+                        return Html::a(\yii\bootstrap\Html::icon('eye-open'), $url, ['title' => '回滚']);
                     }
                 ],
             ],

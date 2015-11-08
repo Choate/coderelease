@@ -19,7 +19,7 @@ use choate\coderelease\models\forms\WebsiteForm;
 class WebsitesController extends Controller
 {
     public function actionIndex() {
-        $dataProvider = Websites::find()->provider();
+        $dataProvider = Websites::find()->provider(['pagination' => false]);
 
         return $this->render('index', ['dataProvider' => $dataProvider]);
     }

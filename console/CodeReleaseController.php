@@ -19,9 +19,9 @@ class CodeReleaseController extends Controller
 {
     public function actionStatus($hash) {
         $model = Tasks::find()->getByHash($hash);
-        $result = -1;
+        $result = 0;
         if ($model) {
-            $result = $model->website->getIsBusy() && $model->getIsApply() || $model->getIsRollback();
+            $result = 1;
         }
 
         $this->stdout((int)$result);

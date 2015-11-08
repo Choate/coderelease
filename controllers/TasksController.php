@@ -35,7 +35,7 @@ class TasksController extends Controller
     public function actionIndex($id) {
         $dataProvider = Tasks::find()->getListByWebsite($id);
 
-        return $this->render('index', ['dataProvider' => $dataProvider]);
+        return $this->render('index', ['dataProvider' => $dataProvider, 'id' => $id]);
     }
 
     public function actionCreate($id) {
@@ -52,23 +52,6 @@ class TasksController extends Controller
         /* @var Tasks $model */
         $model = Tasks::find()->getById($id);
         $this->_tasksService->audit($model);
-
-        return Json::encode(['status' => !$model->hasErrors()]);
-    }
-
-    public function actionRollback($id) {
-        /* @var Tasks $model */
-        $model = Tasks::find()->getById($id);
-        $this->_tasksService->rollback($model);
-
-        return Json::encode(['status' => !$model->hasErrors()]);
-
-    }
-
-    public function actionPublish($id) {
-        /* @var Tasks $model */
-        $model = Tasks::find()->getById($id);
-        $this->_tasksService->publish($model);
 
         return Json::encode(['status' => !$model->hasErrors()]);
     }

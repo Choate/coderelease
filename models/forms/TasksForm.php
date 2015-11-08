@@ -50,7 +50,7 @@ class TasksForm extends DynamicModel
     public function rules() {
         return [
             [['title', 'websites_id'], 'required', 'on' => 'apply'],
-            ['websites_id', 'exist', 'targetClass' => Websites::className(), 'targetAttribute' => 'id', 'filter' => ['status' => Websites::STATUS_IDLE], 'on' => 'apply'],
+            ['websites_id', 'exist', 'targetClass' => Websites::className(), 'targetAttribute' => 'id', 'on' => 'apply'],
             ['status', 'default', 'value' => Tasks::STATUS_APPLY, 'on' => 'apply'],
             ['apply_time', 'default', 'value' => time(), 'on' => 'apply'],
             ['applicant', 'default', 'value' => (int)\Yii::$app->user->id, 'on' => 'apply'],

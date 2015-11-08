@@ -8,8 +8,8 @@ use yii\helpers\Html;
 
 BootstrapAsset::register($this);
 $menuItem = [
-    ['label' => '首页', 'url' => ['/code']],
-    ['label' => '添加服务器', 'url' => ['/code/websites/create']],
+    ['label' => '配置项目', 'url' => ['/code/websites/create']],
+    ['label' => '项目管理', 'url' => ['/code']],
 ];
 $this->beginPage();
 ?>

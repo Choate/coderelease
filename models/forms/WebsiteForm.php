@@ -36,7 +36,7 @@ class WebsiteForm extends DynamicModel
      */
     public function scenarios() {
         return [
-            self::SCENARIO_DEFAULT => ['name', 'website', 'deploy_script', 'deploy_project', '!status'],
+            self::SCENARIO_DEFAULT => ['name', 'website', 'deploy_script', 'deploy_project'],
         ];
     }
 
@@ -44,8 +44,6 @@ class WebsiteForm extends DynamicModel
     public function rules() {
         return [
             [['name', 'deploy_script', 'website', 'deploy_project'], 'required'],
-            ['status', 'default', 'value' => Websites::STATUS_IDLE],
-            ['status', 'in', 'range' => [Websites::STATUS_BUSY, Websites::STATUS_IDLE]],
             ['website', 'url'],
         ];
     }

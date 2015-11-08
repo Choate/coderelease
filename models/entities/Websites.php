@@ -16,15 +16,13 @@ use yii\helpers\ArrayHelper;
  * @property int    $id
  * @property string $name
  * @property string $website
- * @property int    $status
  * @property string $deploy_script
+ * @property string $deploy_project
  * @package choate\coderelease\models
  * @author Choate <choate.yao@gmail.com>
  */
 class Websites extends ActiveRecord
 {
-    const STATUS_IDLE = 0;
-    const STATUS_BUSY = 1;
 
     public static function tableName() {
         return '{{%websites}}';
@@ -36,21 +34,5 @@ class Websites extends ActiveRecord
      */
     public static function find() {
         return \Yii::createObject(WebsitesQuery::className(), [get_called_class()]);
-    }
-
-    public function getStatusItem() {
-        return [self::STATUS_BUSY => '繁忙', self::STATUS_IDLE => '闲置'];
-    }
-
-    public function getStatusName() {
-        return ArrayHelper::getValue($this->getStatusItem(), $this->status);
-    }
-
-    public function getIsBusy() {
-        return $this->status === self::STATUS_BUSY;
-    }
-
-    public function getIsIdle() {
-        return $this->status === self::STATUS_IDLE;
     }
 }

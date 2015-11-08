@@ -5,27 +5,27 @@
  * 不得使用、复制、修改、合并、发布、分发和/或销售本源代码的副本。
  * @copyright Copyright (c) 2013 xsteach.com all rights reserved.
  */
-use yii\grid\ActionColumn;
-use yii\grid\GridView;
-use yii\helpers\Html;
+use yii\bootstrap\Html;
+use yii\widgets\ListView;
 
-echo GridView::widget([
-    'dataProvider' => $dataProvider,
-    'columns' => [
-        'id',
-        'name',
-        'statusName',
-        [
-            'class' => ActionColumn::className(),
-            'template' => "{tasks/index}\n{tasks/create}\n{update}",
-            'buttons' => [
-                'tasks/index' => function ($url) {
-                    return Html::a(Html::tag('span', '', ['class' => 'glyphicon glyphicon-th-list']), $url, ['title' => '任务列表']);
-                },
-                'tasks/create' => function ($url, $model) {
-                    return !$model->getIsBusy() ? Html::a(Html::tag('span', '', ['class' => 'glyphicon glyphicon-plus']), $url, ['title' => '新增任务']) : '';
-                }
-            ],
-        ],
-    ],
-]);
+echo ListView::widget([
+        'dataProvider' => $dataProvider,
+        'layout'       => '{items}',
+        'options'      => ['class' => 'row'],
+        'itemOptions'  => ['class' => 'col-sm-6 col-md-4'],
+        'itemView'     => function ($model) {
+            return Html::beginTag('div', ['class' => 'thumbnail brand-primary']) .
+                   Html::beginTag('div', ['class' => 'caption']) .
+                   Html::tag('h3', $model->name, ['class' => 'text-center']) .
+                   Html::tag('p', '&nbsp;') .
+                   Html::tag('p',
+                       Html::a('上线任务', ['tasks/index', 'id' => $model->id], ['class' => 'btn btn-info', 'role' => 'button']) .
+                       ' ' .
+                       Html::a('部署任务', ['deploy/index', 'id' => $model->id], ['class' => 'btn btn-success', 'role' => 'button'])
+                   ) .
+                   Html::endTag('div') .
+                   Html::endTag('div');
+        }
+    ]
+);
+?>

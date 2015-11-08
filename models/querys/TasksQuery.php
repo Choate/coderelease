@@ -8,6 +8,7 @@
 namespace choate\coderelease\models\querys;
 
 use choate\coderelease\components\ActiveQuery;
+use choate\coderelease\models\entities\Tasks;
 
 /**
  * Class TasksQuery
@@ -25,7 +26,7 @@ class TasksQuery extends ActiveQuery
      * @return \yii\data\ActiveDataProvider
      */
     public function getListByWebsite($id, array $options = []) {
-        return $this->where(['websites_id' => $id])->provider($options);
+        return $this->byWebsite($id)->provider($options);
     }
 
     /**
@@ -48,5 +49,36 @@ class TasksQuery extends ActiveQuery
      */
     public function getByHash($hash) {
         return $this->where(['hash' => $hash])->one();
+    }
+
+    /**
+     * @since 1.0
+     * @author Choate <choate.yao@gmail.com>
+     * @return $this
+     */
+    public function isPass() {
+        return $this->andWhere(['status' => Tasks::STATUS_PASS]);
+    }
+
+    /**
+     * @param $id
+     *
+     * @since 1.0
+     * @author Choate <choate.yao@gmail.com>
+     * @return $this
+     */
+    public function byWebsite($id) {
+        return $this->andWhere(['websites_id' => $id]);
+    }
+
+    /**
+     * @param int|array $id
+     *
+     * @since 1.0
+     * @author Choate <choate.yao@gmail.com>
+     * @return $this
+     */
+    public function byId($id) {
+        return $this->andWhere(['id' => $id]);
     }
 }
