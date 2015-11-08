@@ -9,6 +9,7 @@ namespace choate\coderelease\models\entities;
 
 use choate\coderelease\components\ActiveRecord;
 use choate\coderelease\models\querys\DeployQuery;
+use yii\helpers\ArrayHelper;
 
 /**
  * Class Deploy
@@ -57,6 +58,14 @@ class Deploy extends ActiveRecord
             self::SCENARIO_DEFAULT => $this->attributes(),
             self::SCENARIO_TRANSACTION => $this->attributes()
         ];
+    }
+
+    public function getStatusName() {
+        return ArrayHelper::getValue($this->getStatusItem(), $this->status);
+    }
+
+    public function getStatusItem() {
+        return [self::DEPLOY_SUCCESS => '部署成功', self::ROLLBACK_SUCCESS => '回滚成功'];
     }
 
 }

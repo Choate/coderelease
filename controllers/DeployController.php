@@ -29,10 +29,7 @@ class DeployController extends Controller
     public function actionDeploy($id) {
         $tasks = Tasks::find()->byWebsite($id)->isPass()->all();
         $service = new DeployService();
-        $model = new DeployForm();
-        if ($model->load($_POST) && $model->validate()) {
-
-        }
+        $model = $service->deploy($id, \Yii::$app->request->post('DeployForm'));
 
         return $this->render('deploy', ['model' => $model, 'tasks' => $tasks]);
     }

@@ -30,12 +30,12 @@ class DeployService extends Object
             $model = new Deploy(['scenario' => Deploy::SCENARIO_TRANSACTION]);
             $model->on(Deploy::EVENT_AFTER_INSERT, function ($event) use ($form) {
                 $this->execDeploy($form, $event->sender);
-                $event->sender->version = $this->execCurrentVersion($event->sender);
+                $event->sender->deploy_version = $this->execCurrentVersion($event->sender);
                 $event->sender->update();
             }
             );
             $model->setAttributes($form->getAttributes(null, ['tasks_id']));
-            $model->insert(false);
+            $model->insert(false, array_keys($model->getAttributes(null, ['deploy_version'])));
         }
 
         return $form;
