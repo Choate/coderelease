@@ -68,4 +68,8 @@ class Deploy extends ActiveRecord
         return [self::DEPLOY_SUCCESS => '部署成功', self::ROLLBACK_SUCCESS => '回滚成功'];
     }
 
+    public function getWebsite() {
+        return $this->hasOne(Websites::className(), ['id' => 'websites_id']);
+    }
+
 }
