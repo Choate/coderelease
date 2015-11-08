@@ -25,6 +25,6 @@ class DeployQuery extends ActiveQuery
      * @return \yii\data\ActiveDataProvider
      */
     public function getItemByWebsite($id, array $options = []) {
-        return $this->where(['id' => $id])->provider($options);
+        return $this->where(['websites_id' => $id])->provider($options);
     }
 }
