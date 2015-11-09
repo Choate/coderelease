@@ -33,9 +33,8 @@ class Tasks extends ActiveRecord
 
     const STATUS_APPLY = 0;
     const STATUS_PASS = 1;
-    const STATUS_FAIL = 2;
-    const STATUS_SUCCESS = 3;
-    const STATUS_ROLLBACK = 4;
+    const STATUS_SUCCESS = 2;
+    const STATUS_ROLLBACK = 3;
     const SCENARIO_TRANSACTION = 'transaction';
 
     public static function tableName() {
@@ -83,7 +82,7 @@ class Tasks extends ActiveRecord
     }
 
     public function getStatusItem() {
-        return [self::STATUS_APPLY => '待审核', self::STATUS_PASS => '审核通过', self::STATUS_FAIL => '上线失败', self::STATUS_SUCCESS => '上线成功', self::STATUS_ROLLBACK => '回滚成功'];
+        return [self::STATUS_APPLY => '待审核', self::STATUS_PASS => '审核通过', self::STATUS_SUCCESS => '上线成功', self::STATUS_ROLLBACK => '回滚成功'];
     }
 
     public function getStatusName() {

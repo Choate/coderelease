@@ -32,6 +32,7 @@ class DeployService extends Object
                 $this->execDeploy($form, $event->sender);
                 $event->sender->deploy_version = $this->execCurrentVersion($event->sender);
                 $event->sender->update();
+                Tasks::updateAll(['status' => Tasks::STATUS_SUCCESS], ['id' => $form->tasks_id]);
             }
             );
             $model->setAttributes($form->getAttributes(null, ['tasks_id']));
@@ -51,6 +52,7 @@ class DeployService extends Object
         $messageItem = ArrayHelper::getColumn($models, 'title');
         $website     = $model->website;
         DepControl::run(['deployScript' => $website->deploy_script, 'deployProject' => $website->deploy_project])->deploy(implode(';', $hashItem), implode(';', $messageItem));
+
     }
 
     private function execCurrentVersion($model) {
