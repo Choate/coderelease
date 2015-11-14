@@ -7,6 +7,8 @@
  */
 namespace choate\coderelease\components;
 
+use yii\filters\AccessControl;
+
 /**
  * Class Controller
  * @package choate\coderelease\components
@@ -14,5 +16,21 @@ namespace choate\coderelease\components;
  */
 class Controller extends \yii\web\Controller
 {
+    /**
+     * @inheritDoc
+     */
+    public function behaviors() {
+        return [
+            'access' => [
+                'class' => AccessControl::className(),
+                'rules' => [
+                    'user' => [
+                        'allow' => true,
+                        'roles' => ['@'],
+                    ],
+                ],
+            ]
+        ];
+    }
 
 }

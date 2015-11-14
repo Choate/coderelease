@@ -20,6 +20,7 @@ class Deploy extends ActiveRecord
 {
     const DEPLOY_SUCCESS = 0;
     const ROLLBACK_SUCCESS = 1;
+    const REDEPLOY_SUCCESS = 2;
 
     const SCENARIO_TRANSACTION = 'transaction';
 
@@ -65,11 +66,27 @@ class Deploy extends ActiveRecord
     }
 
     public function getStatusItem() {
-        return [self::DEPLOY_SUCCESS => '部署成功', self::ROLLBACK_SUCCESS => '回滚成功'];
+        return [self::DEPLOY_SUCCESS => '部署成功', self::ROLLBACK_SUCCESS => '回滚成功', self::REDEPLOY_SUCCESS => '重新部署成功'];
+    }
+
+    public function getIsDeploy() {
+        return $this->status == self::DEPLOY_SUCCESS;
+    }
+
+    public function getIsRollback() {
+        return $this->status == self::ROLLBACK_SUCCESS;
     }
 
     public function getWebsite() {
         return $this->hasOne(Websites::className(), ['id' => 'websites_id']);
+    }
+
+    public function getDeployHasTask() {
+        return $this->hasMany(DeployHasTasks::className(), ['deploy_id' => 'id']);
+    }
+
+    public function getTaskItem() {
+        return $this->hasMany(Tasks::className(), ['id' => 'tasks_id'])->via('deployHasTask');
     }
 
 }

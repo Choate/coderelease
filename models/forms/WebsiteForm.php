@@ -28,23 +28,14 @@ class WebsiteForm extends DynamicModel
      */
     public function __construct(array $config = []) {
         $this->_model = new Websites();
-        parent::__construct($this->_model->attributes(), $config);
+        parent::__construct(['name', 'user_id', 'deploy_script', 'deploy_project', 'website'], $config);
     }
-
-    /**
-     * @inheritDoc
-     */
-    public function scenarios() {
-        return [
-            self::SCENARIO_DEFAULT => ['name', 'website', 'deploy_script', 'deploy_project'],
-        ];
-    }
-
 
     public function rules() {
         return [
             [['name', 'deploy_script', 'website', 'deploy_project'], 'required'],
             ['website', 'url'],
+            ['user_id', 'match', 'pattern' => '#^\d+(,\d+)*$#'],
         ];
     }
 }

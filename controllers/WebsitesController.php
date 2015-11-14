@@ -8,8 +8,10 @@
 namespace choate\coderelease\controllers;
 
 use choate\coderelease\components\Controller;
+use choate\coderelease\models\entities\WebsiteHasUser;
 use choate\coderelease\models\entities\Websites;
 use choate\coderelease\models\forms\WebsiteForm;
+use yii\filters\AccessControl;
 
 /**
  * Class WebsitesController
@@ -18,6 +20,7 @@ use choate\coderelease\models\forms\WebsiteForm;
  */
 class WebsitesController extends Controller
 {
+
     public function actionIndex() {
         $dataProvider = Websites::find()->provider(['pagination' => false]);
 
@@ -28,7 +31,13 @@ class WebsitesController extends Controller
         $form = new WebsiteForm();
         if ($form->load($_POST) && $form->validate()) {
             $model = new Websites();
-            $model->setAttributes($form->getAttributes(), false);
+            $model->on(Websites::EVENT_AFTER_INSERT, function($event) use ($form) {
+                $model = $event->sender;
+                if ($form->user_id) {
+                    WebsiteHasUser::batchInsertByCondition(['user_id'], explode(',', $form->user_id), ['website_id' => $model->id]);
+                }
+            });
+            $model->setAttributes($form->getAttributes(null, ['user_id']), false);
             $model->insert(false);
 
             return $this->redirect('index');
@@ -40,9 +49,16 @@ class WebsitesController extends Controller
     public function actionUpdate($id) {
         /* @var Websites $model */
         $model = Websites::findOne($id);
-        $form = new WebsiteForm();
+        $form  = new WebsiteForm();
         if ($form->load($_POST) && $form->validate()) {
-            $model->setAttributes($form->getAttributes($form->safeAttributes()), false);
+            $model->setAttributes($form->getAttributes(null, ['user_id']), false);
+            $model->on(Websites::EVENT_AFTER_UPDATE, function($event) use ($form) {
+                $model = $event->sender;
+                WebsiteHasUser::deleteAll(['website_id' => $model->id]);
+                if ($form->user_id) {
+                    WebsiteHasUser::batchInsertByCondition(['user_id'], explode(',', $form->user_id), ['website_id' => $model->id]);
+                }
+            });
             $model->update(false);
 
             return $this->redirect('index');

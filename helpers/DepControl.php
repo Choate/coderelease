@@ -61,6 +61,9 @@ class DepControl extends Object
     }
 
     public function current() {
-        return $this->runCommand('current');
+        $result = $this->runCommand('current');
+        list(,,$version,) = explode(PHP_EOL, $result);
+
+        return $version;
     }
 }

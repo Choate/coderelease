@@ -12,3 +12,4 @@ echo $form->field($model, 'name');
 echo $form->field($model, 'website');
 echo $form->field($model, 'deploy_project');
 echo $form->field($model, 'deploy_script');
+echo $form->field($model, 'user_id');

@@ -2,6 +2,7 @@
 use choate\coderelease\models\entities\Deploy;
 use choate\coderelease\models\entities\DeployHasTasks;
 use choate\coderelease\models\entities\Tasks;
+use choate\coderelease\models\entities\WebsiteHasUser;
 use choate\coderelease\models\entities\Websites;
 use yii\db\Migration;
 use yii\db\Schema;
@@ -48,6 +49,17 @@ class m151028_082547_init extends Migration
                 'websites_id'    => Schema::TYPE_INTEGER . '(11) NOT NULL',
             ]
         );
+        $this->createTable(DeployHasTasks::tableName(), [
+                'deploy_id' => Schema::TYPE_INTEGER . '(11) NOT NULL',
+                'tasks_id'  => Schema::TYPE_INTEGER . '(11) NOT NULL',
+            ]
+        );
+        $this->createTable(WebsiteHasUser::tableName(), [
+            'website_id' => Schema::TYPE_INTEGER . '(11) NOT NULL',
+            'user_id'  => Schema::TYPE_INTEGER . '(11) NOT NULL',
+        ]);
+        $this->addPrimaryKey('pk', DeployHasTasks::tableName(), ['deploy_id', 'tasks_id']);
+        $this->addPrimaryKey('pk', WebsiteHasUser::tableName(), ['website_id', 'user_id']);
         $this->createIndex('websites_id', Tasks::tableName(), ['websites_id']);
         $this->createIndex('tasks_hash', Tasks::tableName(), ['hash']);
         $this->createIndex('websites_id', Deploy::tableName(), ['websites_id']);
@@ -59,6 +71,7 @@ class m151028_082547_init extends Migration
         $this->dropTable('IF EXISTS ' . Websites::tableName());
         $this->dropTable('IF EXISTS ' . Tasks::tableName());
         $this->dropTable('IF EXISTS ' . Deploy::tableName());
+        $this->dropTable('IF EXISTS ' . DeployHasTasks::tableName());
 
         return true;
     }

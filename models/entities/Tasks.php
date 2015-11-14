@@ -8,9 +8,7 @@
 namespace choate\coderelease\models\entities;
 
 use choate\coderelease\components\ActiveRecord;
-use choate\coderelease\models\behaviors\WebsiteStatusBehavior;
 use choate\coderelease\models\querys\TasksQuery;
-use yii\behaviors\AttributeBehavior;
 use yii\helpers\ArrayHelper;
 
 /**

@@ -11,6 +11,7 @@ use choate\coderelease\components\Common;
 use choate\coderelease\components\Controller;
 use choate\coderelease\models\entities\Tasks;
 use choate\coderelease\models\services\TasksService;
+use choate\coderelease\models\services\WebsiteService;
 use yii\helpers\Json;
 use yii\rest\Serializer;
 
@@ -33,12 +34,14 @@ class TasksController extends Controller
     }
 
     public function actionIndex($id) {
+        WebsiteService::checkAccess($id);
         $dataProvider = Tasks::find()->getListByWebsite($id);
 
         return $this->render('index', ['dataProvider' => $dataProvider, 'id' => $id]);
     }
 
     public function actionCreate($id) {
+        WebsiteService::checkAccess($id);
         $request = \Yii::$app->request;
         $form = $this->_tasksService->apply($id, $request->post('TasksForm', null));
         if ($request->getIsPost() && !$form->hasErrors()) {
@@ -51,6 +54,7 @@ class TasksController extends Controller
     public function actionPass($id) {
         /* @var Tasks $model */
         $model = Tasks::find()->getById($id);
+        WebsiteService::checkAccess($model->websites_id);
         $this->_tasksService->audit($model);
 
         return Json::encode(['status' => !$model->hasErrors()]);

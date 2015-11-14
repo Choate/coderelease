@@ -10,10 +10,21 @@ namespace choate\coderelease\models\querys;
 use choate\coderelease\components\ActiveQuery;
 
 /**
- * Class WebsitesQuery
+ * Class WebsiteHasUserQuery
  * @package choate\coderelease\models\querys
  * @author Choate <choate.yao@gmail.com>
  */
-class WebsitesQuery extends ActiveQuery
+class WebsiteHasUserQuery extends ActiveQuery
 {
+    /**
+     * @param $website
+     * @param $user
+     *
+     * @since 1.0
+     * @author Choate <choate.yao@gmail.com>
+     * @return bool
+     */
+    public function can($website, $user) {
+        return $this->where(['website_id' => $website, 'user_id' => $user])->exists();
+    }
 }

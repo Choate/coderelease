@@ -11,8 +11,8 @@ use choate\coderelease\helpers\DepControl;
 use choate\coderelease\models\entities\Deploy;
 use choate\coderelease\models\entities\DeployHasTasks;
 use choate\coderelease\models\entities\Tasks;
-use choate\coderelease\models\entities\Websites;
 use choate\coderelease\models\forms\DeployForm;
+use yii\base\Event;
 use yii\base\Object;
 use yii\helpers\ArrayHelper;
 
@@ -29,9 +29,11 @@ class DeployService extends Object
         if ($form->load($data, '') && $form->validate()) {
             $model = new Deploy(['scenario' => Deploy::SCENARIO_TRANSACTION]);
             $model->on(Deploy::EVENT_AFTER_INSERT, function ($event) use ($form) {
+                $website = $event->sender->website;
                 $this->execDeploy($form, $event->sender);
-                $event->sender->deploy_version = $this->execCurrentVersion($event->sender);
+                $event->sender->deploy_version = DepControl::run(['deployScript' => $website->deploy_script, 'deployProject' => $website->deploy_project])->current();
                 $event->sender->update();
+                DeployHasTasks::batchInsertByCondition(['tasks_id'], (array)$form->tasks_id, ['deploy_id' => $event->sender->id]);
                 Tasks::updateAll(['status' => Tasks::STATUS_SUCCESS], ['id' => $form->tasks_id]);
             }
             );
@@ -43,7 +45,33 @@ class DeployService extends Object
     }
 
     public function rollback(Deploy $model) {
-        DepControl::run(['deployScript' => $model->website->deploy_script, 'deployProject' => $model->website->website->deploy_project])->rollback($model->version);
+        $deploy         = clone $model;
+        $deploy->status = Deploy::ROLLBACK_SUCCESS;
+        $deploy->setScenario(Deploy::SCENARIO_TRANSACTION);
+        $deploy->on(Deploy::EVENT_BEFORE_UPDATE, function ($event) {
+            $model = $event->sender;
+            Tasks::updateAll(['status' => Tasks::STATUS_ROLLBACK], ['id' => ArrayHelper::getColumn($model->deployHasTask, 'tasks_id')]);
+            DepControl::run(['deployScript' => $model->website->deploy_script, 'deployProject' => $model->website->website->deploy_project])->rollback($model->deploy_version);
+        }
+        );
+        $result        = $deploy->update();
+        $model->status = $deploy->status;
+
+        return $result;
+    }
+
+    public function redeploy(Deploy $model, $data) {
+        Event::on(Deploy::className(), Deploy::EVENT_AFTER_INSERT, function ($event) use ($model) {
+            $model->status = Deploy::REDEPLOY_SUCCESS;
+            $model->update(false);
+        }
+        );
+        Event::on(DeployForm::className(), DeployForm::EVENT_AFTER_VALIDATE, function ($event) use ($model) {
+            $event->sender->tasks_id = array_unique(array_merge($event->sender->tasks_id, ArrayHelper::getColumn($model->deployHasTask, 'tasks_id', [])));
+        }
+        );
+
+        return $this->deploy($model->websites_id, $data);
     }
 
     private function execDeploy($form, $model) {
@@ -52,14 +80,11 @@ class DeployService extends Object
         $messageItem = ArrayHelper::getColumn($models, 'title');
         $website     = $model->website;
         DepControl::run(['deployScript' => $website->deploy_script, 'deployProject' => $website->deploy_project])->deploy(implode(';', $hashItem), implode(';', $messageItem));
-
     }
 
     private function execCurrentVersion($model) {
         $website = $model->website;
-        $result = DepControl::run(['deployScript' => $website->deploy_script, 'deployProject' => $website->deploy_project])->current();
-        list(,,$version,) = explode(PHP_EOL, $result);
 
-        return $version;
+        return DepControl::run(['deployScript' => $website->deploy_script, 'deployProject' => $website->deploy_project])->current();
     }
 }

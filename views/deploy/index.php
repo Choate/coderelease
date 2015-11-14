@@ -20,10 +20,13 @@ echo GridView::widget([
             'statusName',
             [
                 'class'    => ActionColumn::className(),
-                'template' => "{rollback}",
+                'template' => "{rollback}\n{redeploy}",
                 'buttons'  => [
-                    'rollback' => function ($url) {
-                        return Html::a(\yii\bootstrap\Html::icon('eye-open'), $url, ['title' => '回滚']);
+                    'rollback' => function ($url, $model) {
+                        return $model->getIsDeploy() ? Html::a(\yii\bootstrap\Html::icon('share-alt'), $url, ['title' => '回滚']) : '';
+                    },
+                    'redeploy' => function ($url, $model) {
+                        return $model->getIsRollback() ? Html::a(\yii\bootstrap\Html::icon('refresh'), $url, ['title' => '重新部署']) : '';
                     }
                 ],
             ],

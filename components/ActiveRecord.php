@@ -17,4 +17,14 @@ class ActiveRecord extends \yii\db\ActiveRecord
     public function getIdentityClass() {
         return \Yii::$app->user->identityClass;
     }
+
+    public static function batchInsertByCondition(array $columns, array $rows, array $condition) {
+        array_walk($rows, function(&$value, $key) use ($condition) {
+            $value = array_merge((array)$value, array_values($condition));
+        });
+
+        return static::getDb()->createCommand()->batchInsert(static::tableName(), array_merge($columns, array_keys($condition)), $rows)->execute();
+    }
+
+
 }

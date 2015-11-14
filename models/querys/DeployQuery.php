@@ -27,4 +27,19 @@ class DeployQuery extends ActiveQuery
     public function getItemByWebsite($id, array $options = []) {
         return $this->where(['websites_id' => $id])->provider($options);
     }
+
+    /**
+     * @param $id
+     *
+     * @since 1.0
+     * @author Choate <choate.yao@gmail.com>
+     * @return array|null|\choate\coderelease\models\entities\Deploy
+     */
+    public function getById($id) {
+        return $this->where(['id' => $id])->one();
+    }
+
+    public function byId($id) {
+        return $this->andWhere(['id' => $id]);
+    }
 }
