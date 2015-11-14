@@ -72,6 +72,7 @@ class m151028_082547_init extends Migration
         $this->dropTable('IF EXISTS ' . Tasks::tableName());
         $this->dropTable('IF EXISTS ' . Deploy::tableName());
         $this->dropTable('IF EXISTS ' . DeployHasTasks::tableName());
+        $this->dropTable('IF EXISTS ' . WebsiteHasUser::tableName());
 
         return true;
     }

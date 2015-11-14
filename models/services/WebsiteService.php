@@ -27,7 +27,7 @@ class WebsiteService extends Object
      * @throws ForbiddenHttpException
      */
     public static function checkAccess($website) {
-        if (!\Yii::$app->user->id && !WebsiteHasUser::find()->can($website, \Yii::$app->user->id)) {
+        if (!\Yii::$app->user->id || !WebsiteHasUser::find()->can($website, \Yii::$app->user->id)) {
             throw new ForbiddenHttpException(\Yii::t('yii', 'You are not allowed to perform this action.'));
         }
 

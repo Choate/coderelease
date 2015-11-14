@@ -23,6 +23,22 @@ use yii\web\Response;
  */
 class DeployController extends Controller
 {
+    /**
+     * @inheritDoc
+     */
+    public function behaviors() {
+        $behaviors = parent::behaviors();
+        $behaviors['format'] = [
+            'class' => ContentNegotiator::className(),
+            'format' => [
+                'text/html' => Response::FORMAT_HTML,
+                'application/json' => Response::FORMAT_JSON,
+            ],
+        ];
+
+        return $behaviors;
+    }
+
 
     public function actionIndex($id) {
         WebsiteService::checkAccess($id);
