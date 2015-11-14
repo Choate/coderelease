@@ -30,7 +30,7 @@ class DeployController extends Controller
         $behaviors = parent::behaviors();
         $behaviors['format'] = [
             'class' => ContentNegotiator::className(),
-            'format' => [
+            'formats' => [
                 'text/html' => Response::FORMAT_HTML,
                 'application/json' => Response::FORMAT_JSON,
             ],
