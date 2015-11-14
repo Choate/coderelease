@@ -45,7 +45,6 @@ class m151028_082547_init extends Migration
                 'deploy_time'    => Schema::TYPE_INTEGER . '(11) NOT NULL DEFAULT 0 COMMENT "部署时间"',
                 'deploy_version' => Schema::TYPE_STRING . '(45) NOT NULL DEFAULT "" COMMENT "部署版本"',
                 'status'         => 'tinyint(1) NOT NULL DEFAULT 0 COMMENT "状态：0 部署成功、1 回滚成功"',
-                'message'        => Schema::TYPE_STRING . '(2000) NOT NULL DEFAULT "" COMMENT "日志"',
                 'websites_id'    => Schema::TYPE_INTEGER . '(11) NOT NULL',
             ]
         );
