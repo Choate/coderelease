@@ -51,7 +51,7 @@ class DeployService extends Object
         $deploy->on(Deploy::EVENT_BEFORE_UPDATE, function ($event) {
             $model = $event->sender;
             Tasks::updateAll(['status' => Tasks::STATUS_ROLLBACK], ['id' => ArrayHelper::getColumn($model->deployHasTask, 'tasks_id')]);
-            DepControl::run(['deployScript' => $model->website->deploy_script, 'deployProject' => $model->website->website->deploy_project])->rollback($model->deploy_version);
+            DepControl::run(['deployScript' => $model->website->deploy_script, 'deployProject' => $model->website->deploy_project])->rollback($model->deploy_version);
         }
         );
         $result        = $deploy->update();
