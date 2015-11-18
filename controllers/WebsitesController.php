@@ -12,6 +12,7 @@ use choate\coderelease\models\entities\WebsiteHasUser;
 use choate\coderelease\models\entities\Websites;
 use choate\coderelease\models\forms\WebsiteForm;
 use yii\filters\AccessControl;
+use yii\helpers\ArrayHelper;
 
 /**
  * Class WebsitesController
@@ -64,6 +65,7 @@ class WebsitesController extends Controller
             return $this->redirect('index');
         }
         $form->setAttributes($model->getAttributes());
+        $form->user_id = implode(',', ArrayHelper::getColumn($model->websiteHasUser, 'user_id'));
 
         return $this->render('update', ['model' => $form]);
     }

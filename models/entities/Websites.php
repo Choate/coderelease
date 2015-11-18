@@ -35,4 +35,12 @@ class Websites extends ActiveRecord
     public static function find() {
         return \Yii::createObject(WebsitesQuery::className(), [get_called_class()]);
     }
+
+    public function getWebsiteHasUser() {
+        return $this->hasMany(WebsiteHasUser::className(), ['website_id' => 'id']);
+    }
+
+    public function getUserItem() {
+        return $this->hasMany(\Yii::$app->user->identityClass, ['id' => 'user_id']);
+    }
 }
