@@ -20,9 +20,18 @@
     "php": ">=5.5.0",
     "yiisoft/yii2": ">=2.0.6",
     "yiisoft/yii2-bootstrap": "^2.0",
-    "symfony/process": "~2.6"
+    "symfony/process": "~2.6",
+    "bower-asset/layer" : "~2.0"
   },
   "autoload": {
     "psr-4": {"choate\\coderelease\\": ""}
+  },
+  "extra" : {
+    "asset-repositories": {
+      "bower-asset/layer": {
+        "type": "bower-vcs",
+        "url" : "https://github.com/sentsin/layer.git"
+      }
+    }
   }
 }

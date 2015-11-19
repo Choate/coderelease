@@ -5,10 +5,12 @@
  * 不得使用、复制、修改、合并、发布、分发和/或销售本源代码的副本。
  * @copyright Copyright (c) 2013 xsteach.com all rights reserved.
  */
+use choate\coderelease\components\LayerAsset;
 use yii\grid\ActionColumn;
 use yii\grid\GridView;
 use yii\helpers\Html;
 
+LayerAsset::register($this);
 echo Html::a('创建部署', ['deploy', 'id' => $id], ['class' => 'btn btn-primary', 'style' => 'margin-bottom:10px']);
 echo GridView::widget([
         'dataProvider' => $dataProvider,
@@ -23,7 +25,7 @@ echo GridView::widget([
                 'template' => "{rollback}\n{redeploy}",
                 'buttons'  => [
                     'rollback' => function ($url, $model) {
-                        return $model->getIsDeploy() ? Html::a(\yii\bootstrap\Html::icon('share-alt'), $url, ['title' => '回滚']) : '';
+                        return $model->getIsDeploy() ? Html::a(\yii\bootstrap\Html::icon('share-alt'), $url, ['title' => '回滚', 'class' => 'deploy-rollback']) : '';
                     },
                     'redeploy' => function ($url, $model) {
                         return $model->getIsRollback() ? Html::a(\yii\bootstrap\Html::icon('refresh'), $url, ['title' => '重新部署']) : '';
@@ -32,4 +34,25 @@ echo GridView::widget([
             ],
         ],
     ]
+);
+$this->registerJs(<<<EOF
+$('.deploy-rollback').click(function(){
+    var url = $(this).attr('href');
+    layer.confirm('回滚任务？', {icon: 3, title:'提示'}, function(index){
+        layer.close(index);
+        var loadIndex = layer.load(1);
+        $.get(url, function() {
+            layer.msg('回滚成功', {icon: 1, time:1000}, function() {
+                location.reload();
+            });
+        }).fail(function() {
+            layer.msg('回滚失败', {icon: 2, time:1000});
+        }).always(function() {
+            layer.close(loadIndex);
+        });
+    });
+
+    return false;
+});
+EOF
 );
