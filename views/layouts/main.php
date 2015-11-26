@@ -13,6 +13,7 @@ $menuItem = [
 ];
 $this->beginPage();
 ?>
+    <!DOCTYPE html>
     <html>
     <head>
         <meta charset="UTF-8" />
@@ -39,7 +40,7 @@ $this->beginPage();
                 <div class="list-group">
                     <?php
                     foreach ($menuItem as $menu) {
-                        echo Html::a($menu['label'], $menu['url'], ['class' => 'list-group-item'. (in_array($this->context->action->id, $menu['url']) ? ' active' : '')]);
+                        echo Html::a($menu['label'], $menu['url'], ['class' => 'list-group-item' . (in_array($this->context->action->id, $menu['url']) ? ' active' : '')]);
                     }
                     ?>
                 </div>
