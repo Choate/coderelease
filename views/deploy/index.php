@@ -14,7 +14,7 @@ LayerAsset::register($this);
 echo Html::a('创建部署', ['deploy', 'id' => $id], ['class' => 'btn btn-primary', 'style' => 'margin-bottom:10px']);
 echo GridView::widget([
         'dataProvider' => $dataProvider,
-        'layout' => '{items}',
+        'layout' => "{items}\n{pager}",
         'columns'      => [
             'id',
             'deploy_time:datetime',

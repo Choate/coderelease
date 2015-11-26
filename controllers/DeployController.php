@@ -42,7 +42,7 @@ class DeployController extends Controller
 
     public function actionIndex($id) {
         WebsiteService::checkAccess($id);
-        $dataProvider = Deploy::find()->getItemByWebsite($id);
+        $dataProvider = Deploy::find()->getItemByWebsite($id, ['sort' => ['attributes' => ['id'], 'defaultOrder' => ['id']]]);
 
         return $this->render('index', ['dataProvider' => $dataProvider, 'id' => $id]);
     }

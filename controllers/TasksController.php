@@ -35,7 +35,7 @@ class TasksController extends Controller
 
     public function actionIndex($id) {
         WebsiteService::checkAccess($id);
-        $dataProvider = Tasks::find()->getListByWebsite($id);
+        $dataProvider = Tasks::find()->getListByWebsite($id, ['sort' => ['attributes' => ['id'], 'defaultOrder' => ['id' => SORT_DESC]]]);
 
         return $this->render('index', ['dataProvider' => $dataProvider, 'id' => $id]);
     }
