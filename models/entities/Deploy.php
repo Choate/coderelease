@@ -88,5 +88,4 @@ class Deploy extends ActiveRecord
     public function getTaskItem() {
         return $this->hasMany(Tasks::className(), ['id' => 'tasks_id'])->via('deployHasTask');
     }
-
 }

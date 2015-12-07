@@ -14,22 +14,30 @@ LayerAsset::register($this);
 echo Html::a('创建部署', ['deploy', 'id' => $id], ['class' => 'btn btn-primary', 'style' => 'margin-bottom:10px']);
 echo GridView::widget([
         'dataProvider' => $dataProvider,
-        'layout' => "{items}\n{pager}",
+        'layout'       => "{items}\n{pager}",
+        'afterRow'     => function ($model, $key, $index, $grid) {
+            $content = [];
+            foreach ($model->taskItem as $task) {
+                $content[] = Html::tag('div', $task->title, ['class' => 'task-title']);
+            }
+
+            return Html::tag('tr', Html::tag('td', implode("\n", $content), ['colspan' => 4]));
+        },
         'columns'      => [
-            'id',
-            'deploy_time:datetime',
             'deploy_version',
             'statusName',
+            'deploy_time:datetime',
             [
+                'header' => '操作',
                 'class'    => ActionColumn::className(),
-                'template' => "{rollback}\n{redeploy}",
+                'template' => "{rollback}\n{redeploy}\n{test}",
                 'buttons'  => [
                     'rollback' => function ($url, $model) {
                         return $model->getIsDeploy() ? Html::a(\yii\bootstrap\Html::icon('share-alt'), $url, ['title' => '回滚', 'class' => 'deploy-rollback']) : '';
                     },
                     'redeploy' => function ($url, $model) {
                         return $model->getIsRollback() ? Html::a(\yii\bootstrap\Html::icon('refresh'), $url, ['title' => '重新部署']) : '';
-                    }
+                    },
                 ],
             ],
         ],
